@@ -30,10 +30,15 @@ def main():
     # инвертируем
     im_threshold_inverted = ImageChops.invert(im_threshold)
 
-    # переводим байты в строки побитово
-    # 0xf0 => "B11110000"
     img_bytes = im_threshold_inverted.tobytes()
-    bytestr = list(map(lambda x: 'B'+bin(x)[2:].zfill(8), img_bytes))
+
+    # Вариант 1: Вывод бинарных литералов (B01010101)
+    # Наглядно в коде (каждый бит = 1 пиксель), занимает больше места
+    # bytestr = list(map(lambda x: 'B'+bin(x)[2:].zfill(8), img_bytes))
+
+    # Вариант 2: Вывод hex литералов (0xff)
+    # Занимает меньше места, но по коду не видно, что за картинка
+    bytestr = list(map(lambda x: '0x'+hex(x)[2:].zfill(2), img_bytes))
 
     strings = []
     for i in range(0, len(bytestr), split_after):
@@ -41,13 +46,17 @@ def main():
 
     bytestr2 = '\n'.join(strings)
 
-    print(bytestr2)
     # B00000000, B00000000, ....
+    # или
+    # 0x12, 0x34, ....
+    # В С-коде для ардуино это будет выглядеть так:
+    #
+    #     static const unsigned char PROGMEM image[] =
+    #     {
+    #         /* вывод print()-a */
+    #     };
 
-    # В С-коде для ардуино это будет выглядеть как
-    # static const unsigned char PROGMEM image[] =
-    # {
-    #     B00000000, B00000000, ......};
+    print(bytestr2)
 
 
 if __name__ == "__main__":
