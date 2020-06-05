@@ -23,7 +23,8 @@ def main():
     # настройка вывода: сколько байт выводить в одной строчке
     split_after = int(target_width/8)
 
-    # переводим в grayscale, затем применяем threshold, потом ресайзим без сглаживания
+    # переводим в grayscale, затем применяем threshold, конвертим в ч/б,
+    # потом ресайзим без сглаживания
     im_threshold: Image = ImageOps.grayscale(im).point(im_filter).convert(
         '1').resize((target_width, target_height), Image.NEAREST)
 
