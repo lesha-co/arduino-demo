@@ -1,5 +1,4 @@
 from PIL import Image, ImageOps, ImageChops
-import math
 
 
 def threshold(n):
